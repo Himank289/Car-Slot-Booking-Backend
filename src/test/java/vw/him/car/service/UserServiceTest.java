@@ -19,14 +19,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-
 public class UserServiceTest {
 
     @Mock
-  UserRepository userRepository;
+    private UserRepository userRepository;
 
     @InjectMocks
-    UserService userService;
+    private UserService userService;
 
 
     @Test
@@ -46,8 +45,8 @@ public class UserServiceTest {
     @Test
     void testGetUserById(){
         Long id=1L;
-        User u=new User();
-        when(userRepository.findById(id)).thenReturn(Optional.of(u));
+        User user=new User();
+        when(userRepository.findById(id)).thenReturn(Optional.of(user));
 
         Optional<User> foundedUser=userService.getUserById(id);
         assertNotNull(foundedUser);

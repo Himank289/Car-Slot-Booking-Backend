@@ -18,7 +18,6 @@ import vw.him.car.exception.UserAlreadyExists;
 import vw.him.car.exception.UserNotFoundException;
 import vw.him.car.exception.WrongCredentials;
 import vw.him.car.repository.UserRepository;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,11 +25,13 @@ import java.util.stream.Collectors;
 public class AuthService {
 
     @Autowired
-     UserRepository userRepository;
+     private UserRepository userRepository;
+
     @Autowired
-     PasswordEncoder passwordEncoder;
+    private  PasswordEncoder passwordEncoder;
+
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     public AuthService() {
     }
@@ -46,7 +47,7 @@ public class AuthService {
 
         User user1 = userRepository.findByEmail(email);
         if(user1 != null){
-            throw new UserAlreadyExists("user already exist");
+            throw new UserAlreadyExists("User already exist");
         }
         User userCreate = new User();
 
@@ -84,9 +85,9 @@ public class AuthService {
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-        User existinguser = userRepository.findByEmail(username);
+        User existingUser = userRepository.findByEmail(username);
         User user = new User();
-        user.setId(existinguser.getId());
+        user.setId(existingUser.getId());
         user.setEmail(userDetails.getUsername());
         user.setName(userDetails.getUsername());
         user.setPassword(userDetails.getPassword());
@@ -101,11 +102,9 @@ public class AuthService {
 
         AuthResponse authResponse=new AuthResponse();
         authResponse.setJwt(token);
-        authResponse.setMessage("Login sucess");
+        authResponse.setMessage("Login success");
         authResponse.setStatus(true);
         authResponse.setUser(user);
-
-//       return new ResponseEntity<AuthResponse>(authResponse,HttpStatus.OK);
         return ResponseEntity.ok(authResponse);
     }
 
@@ -127,11 +126,5 @@ public class AuthService {
 
         return new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
     }
-
-
-
-
-
-
 
 }

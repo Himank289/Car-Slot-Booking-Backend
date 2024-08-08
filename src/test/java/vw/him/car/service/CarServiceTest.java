@@ -21,10 +21,10 @@ import static org.mockito.Mockito.*;
 class CarServiceTest {
 
     @Mock
-     CarRepo carrepository;
+     private CarRepo carRepository;
 
     @InjectMocks
-    CarServiceImpl carservice;
+    private CarServiceImpl carService;
 
     @Test
     void testGetAllCars(){
@@ -32,9 +32,9 @@ class CarServiceTest {
         lst.add(new Car());
         lst.add(new Car());
 
-        when(carrepository.findAll()).thenReturn(lst);
+        when(carRepository.findAll()).thenReturn(lst);
 
-        List<Car>carList=carservice.getAllCars();
+        List<Car>carList=carService.getAllCars();
         assertNotNull(carList);
         assertEquals(lst.size(),carList.size());
         assertEquals(lst,carList);
@@ -43,12 +43,12 @@ class CarServiceTest {
     @Test
     void testGetCarById(){
         Long id=1L;
-        Car c =new Car();
-        when(carrepository.findById(id)).thenReturn(Optional.of(c));
+        Car car =new Car();
+        when(carRepository.findById(id)).thenReturn(Optional.of(car));
 
-        Optional<Car> foundcar=carservice.getCarById(id);
-        assertNotNull(foundcar);
-        verify(carrepository).findById(id);
+        Optional<Car> foundCar=carService.getCarById(id);
+        assertNotNull(foundCar);
+        verify(carRepository).findById(id);
 
     }
 
@@ -56,14 +56,14 @@ class CarServiceTest {
     void testGetCarById_CarNotFound() {
 
         Long id = 1L;
-        when(carrepository.findById(id)).thenReturn(Optional.empty());
+        when(carRepository.findById(id)).thenReturn(Optional.empty());
 
-        Throwable exception = assertThrows(CarNotFoundException.class, () -> carservice.getCarById(id));
+        Throwable exception = assertThrows(CarNotFoundException.class, () -> carService.getCarById(id));
 
         assertNotNull(exception);
         assertEquals("Car Not Found", exception.getMessage());
 
-        verify(carrepository, times(1)).findById(id);
+        verify(carRepository, times(1)).findById(id);
     }
 
     @Test
