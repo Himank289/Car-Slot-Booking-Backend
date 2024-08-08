@@ -73,7 +73,7 @@ public class UserService implements UserDetailsService {
 
     public User getUserProfile(String jwt)
     {
-        String email= JwtProvider.getEmailFromJwtTone(jwt);
+        String email= JwtProvider.getEmailFromJwtToken(jwt);
         User fetchedUser=userRepository.findByEmail(email);
         if(fetchedUser!=null) {
             return userRepository.findByEmail(email);}

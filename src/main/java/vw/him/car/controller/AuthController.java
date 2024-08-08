@@ -7,7 +7,6 @@ import vw.him.car.entity.AuthResponse;
 import vw.him.car.entity.LoginRequest;
 import vw.him.car.entity.User;
 import vw.him.car.service.AuthService;
-
 import javax.validation.Valid;
 
 @RestController
@@ -16,7 +15,7 @@ import javax.validation.Valid;
 public class AuthController {
 
     @Autowired
-    AuthService authService;
+    private AuthService authService;
 
 
     @PostMapping("/signup")

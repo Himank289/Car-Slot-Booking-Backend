@@ -10,7 +10,6 @@ import vw.him.car.entity.Car;
 import vw.him.car.exception.CarNotFoundException;
 import vw.him.car.exception.NotAuthorizedException;
 import vw.him.car.service.CarServiceImpl;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -21,7 +20,7 @@ import java.util.Optional;
     public class CarRestController {
 
         @Autowired
-        CarServiceImpl carService;
+        private CarServiceImpl carService;
 
         @GetMapping("/")
         public ResponseEntity<List<Car>> getAllCars(){
@@ -45,9 +44,9 @@ import java.util.Optional;
         }
 
         @PostMapping("/")
-        public ResponseEntity<Car> createCar(@RequestHeader("Authorization") String jwt,@RequestBody Car c) {
+        public ResponseEntity<Car> createCar(@RequestHeader("Authorization") String jwt,@RequestBody Car car) {
             try {
-                Car savedCar = carService.createCar(jwt, c);
+                Car savedCar = carService.createCar(jwt, car);
                 return ResponseEntity.ok(savedCar);
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -59,11 +58,7 @@ import java.util.Optional;
         public ResponseEntity<Car> updateCar(@RequestHeader("Authorization") String jwt,@PathVariable Long id, @RequestBody Car carDetails) {
             try {
                 Optional<Car> updatedCar = carService.updateCar(jwt, id, carDetails);
-                if (updatedCar.isPresent()) {
-                    return ResponseEntity.ok(updatedCar.get());
-                } else {
-                    return ResponseEntity.notFound().build();
-                }
+                return updatedCar.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             }
@@ -95,7 +90,7 @@ import java.util.Optional;
         }
 
         @GetMapping("/bookings")
-        public ResponseEntity<List<BookACarDto>>  getBookings(){
+        public ResponseEntity<List<BookACarDto>> getBookings(){
 
             return ResponseEntity.ok(carService.getBookings());
         }
@@ -112,6 +107,7 @@ import java.util.Optional;
                 @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                 @RequestParam("startTime") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime startTime,
                 @RequestParam("endTime") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime endTime) {
+            
             boolean available = carService.isSlotAvailable(date, startTime, endTime);
             return ResponseEntity.ok(available);
         }
