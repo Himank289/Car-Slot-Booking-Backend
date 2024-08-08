@@ -13,7 +13,6 @@ import vw.him.car.exception.NotAuthorizedException;
 import vw.him.car.exception.UserAlreadyExists;
 import vw.him.car.exception.UserNotFoundException;
 import vw.him.car.repository.UserRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +21,7 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
 
     @Autowired
-     UserRepository userRepository;
+    private UserRepository userRepository;
 
 
     public List<User> getAllUsers() {
@@ -39,8 +38,8 @@ public class UserService implements UserDetailsService {
     }
 
     public User saveUser(User user) {
-        User fecthedUser = userRepository.findByEmail(user.getEmail());
-        if(fecthedUser != null) {
+        User fetchedUser = userRepository.findByEmail(user.getEmail());
+        if(fetchedUser != null) {
             throw new UserAlreadyExists("User is present please login");
         }
         return userRepository.save(user);
@@ -51,12 +50,12 @@ public class UserService implements UserDetailsService {
             Optional<User> user = userRepository.findById(id);{
                 if (user.isPresent()) {
                     userRepository.deleteById(id);
-                    return "user deleted";
+                    return "User Deleted";
                 }}
             throw new UserNotFoundException("User Not Found");
         }
 
-        throw new NotAuthorizedException("not authorized");
+        throw new NotAuthorizedException("Not authorized");
     }
 
     @Override
@@ -64,7 +63,7 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findByEmail(username);
         System.out.println(user);
         if (user== null) {
-            throw new UserNotFoundException("user not found.");
+            throw new UserNotFoundException("User not found.");
         }
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
@@ -77,18 +76,13 @@ public class UserService implements UserDetailsService {
         User fetchedUser=userRepository.findByEmail(email);
         if(fetchedUser!=null) {
             return userRepository.findByEmail(email);}
-        throw new UserNotFoundException("user not found");
+        throw new UserNotFoundException("User not found");
 
     }
-
-
 
     public boolean isAdmin(String jwt){
         User jwtUser=getUserProfile(jwt);
         String role = jwtUser.getRole();
-        if(role != null && role.equals("admin")){
-            return true;
-        }
-        return false;
+        return role != null && role.equals("admin");
     }
 }
