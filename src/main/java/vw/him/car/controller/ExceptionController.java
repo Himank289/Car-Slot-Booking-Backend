@@ -25,7 +25,7 @@ public class ExceptionController {
     }
 
     @ExceptionHandler(value = WrongCredentials.class)
-    public ResponseEntity<Object> handleWrongCredentialSException(WrongCredentials exception) {
+    public ResponseEntity<Object> handleWrongCredentialsException(WrongCredentials exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 

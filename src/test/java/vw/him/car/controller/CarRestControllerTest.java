@@ -9,12 +9,10 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import vw.him.car.entity.Car;
 import vw.him.car.exception.CarNotFoundException;
@@ -32,13 +30,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class CarRestControllerTest {
 
     @Autowired
-     MockMvc mockMvc;
+     private MockMvc mockMvc;
 
     @Mock
-    CarServiceImpl carService;
+    private CarServiceImpl carService;
 
     @InjectMocks
-     CarRestController carRestController;
+     private CarRestController carRestController;
 
     @BeforeEach
     public void setup() {

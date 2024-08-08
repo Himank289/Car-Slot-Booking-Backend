@@ -2,11 +2,13 @@ package vw.him.car.entity;
 
 public class AuthResponse {
 
-    String jwt;
-    String message;
-    boolean status;
+   private String jwt;
 
-    User user;
+   private String message;
+
+   private boolean status;
+
+   private User user;
 
     public AuthResponse() {
         super();

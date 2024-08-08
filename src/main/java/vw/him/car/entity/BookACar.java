@@ -4,7 +4,6 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import vw.him.car.dto.BookACarDto;
 import vw.him.car.enums.BookCarStatus;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;

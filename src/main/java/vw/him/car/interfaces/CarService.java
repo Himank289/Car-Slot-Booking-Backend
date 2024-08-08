@@ -2,7 +2,6 @@ package vw.him.car.interfaces;
 
 import vw.him.car.dto.BookACarDto;
 import vw.him.car.entity.Car;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -14,7 +13,7 @@ public interface CarService {
 
     Optional<Car> getCarById(Long id);
 
-    Car createCar(String jwt,Car c);
+    Car createCar(String jwt,Car car);
 
     Optional<Car> updateCar(String jwt,Long id, Car carDetails);
 

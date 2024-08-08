@@ -15,7 +15,6 @@ import vw.him.car.interfaces.CarService;
 import vw.him.car.repository.BookACarRepository;
 import vw.him.car.repository.CarRepo;
 import vw.him.car.repository.UserRepository;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -27,22 +26,22 @@ import java.util.stream.Collectors;
 public class CarServiceImpl implements CarService {
 
     @Autowired
-     CarRepo carrepository;
+     private CarRepo carRepository;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    BookACarRepository bookACarRepository;
+    private BookACarRepository bookACarRepository;
 
 
     public List<Car> getAllCars(){
-        return carrepository.findAll();
+        return carRepository.findAll();
 
     }
 
     public Optional<Car> getCarById(Long id) {
-        Optional< Car>  car= carrepository.findById(id);
+        Optional< Car>  car= carRepository.findById(id);
         if(car.isPresent()){
             return car;
         }
@@ -50,11 +49,11 @@ public class CarServiceImpl implements CarService {
     }
 
 
-    public Car createCar(String jwt,Car c) {
+    public Car createCar(String jwt,Car car) {
         if (isAdmin(jwt)) {
-            return carrepository.save(c);
+            return carRepository.save(car);
         }
-        throw new NotAuthorizedException("not authorized");
+        throw new NotAuthorizedException("Not authorized");
 
     }
 
@@ -62,7 +61,7 @@ public class CarServiceImpl implements CarService {
     public Optional<Car> updateCar(String jwt,Long id, Car carDetails) {
 
         if (isAdmin(jwt)) {
-            Optional<Car> optionalCar = carrepository.findById(id);
+            Optional<Car> optionalCar = carRepository.findById(id);
             if (optionalCar.isPresent()) {
                 Car existingCar = optionalCar.get();
                 existingCar.setBrand(carDetails.getBrand());
@@ -74,13 +73,13 @@ public class CarServiceImpl implements CarService {
                 existingCar.setType(carDetails.getType());
                 existingCar.setYear(carDetails.getYear());
 
-                carrepository.save(existingCar);
+                carRepository.save(existingCar);
                 return Optional.of(existingCar);
             } else {
                 return Optional.empty();
             }
         }
-        throw new NotAuthorizedException("not authorized");
+        throw new NotAuthorizedException("Not authorized");
 
     }
 
@@ -88,16 +87,16 @@ public class CarServiceImpl implements CarService {
 
     public boolean deleteCar(String jwt,Long id) {
         if (isAdmin(jwt)) {
-            Optional<Car> c = carrepository.findById(id);
-            if (c.isPresent()) {
-                carrepository.deleteById(id);
+            Optional<Car> car = carRepository.findById(id);
+            if (car.isPresent()) {
+                carRepository.deleteById(id);
                 return true;
             } else {
                 return false;
             }
         }
 
-        throw new NotAuthorizedException("not authorized");
+        throw new NotAuthorizedException("Not authorized");
     }
 
 
@@ -107,7 +106,7 @@ public class CarServiceImpl implements CarService {
         User fetchedUser=userRepository.findByEmail(email);
         if(fetchedUser!=null) {
             return userRepository.findByEmail(email);}
-        throw new UserNotFoundException("user not found");
+        throw new UserNotFoundException("User not found");
 
     }
 
@@ -115,16 +114,13 @@ public class CarServiceImpl implements CarService {
     public boolean isAdmin(String jwt){
         User jwtUser=getUserProfile(jwt);
         String role = jwtUser.getRole();
-        if(role != null && role.equals("admin")){
-            return true;
-        }
-        return false;
+        return role != null && role.equals("admin");
     }
 
 
     public boolean bookACar(BookACarDto bookACarDto){
 
-            Optional<Car> optionalCar = carrepository.findById(bookACarDto.getCarId());
+            Optional<Car> optionalCar = carRepository.findById(bookACarDto.getCarId());
             Optional<User> optionalUser = userRepository.findById(bookACarDto.getUserId());
 
             if (optionalCar.isPresent() && optionalUser.isPresent()) {
