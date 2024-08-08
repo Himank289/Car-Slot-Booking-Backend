@@ -1,7 +1,6 @@
 package vw.him.car.dto;
 
 import vw.him.car.enums.BookCarStatus;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -17,7 +16,7 @@ public class BookACarDto {
 
     private BookCarStatus bookCarStatus;
 
-    private Long CarId;
+    private Long carId;
 
     private Long userId;
 
@@ -72,11 +71,11 @@ public class BookACarDto {
     }
 
     public Long getCarId() {
-        return CarId;
+        return carId;
     }
 
     public void setCarId(Long carId) {
-        CarId = carId;
+        this.carId = carId;
     }
 
     public Long getUserId() {
