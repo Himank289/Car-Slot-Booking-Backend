@@ -9,14 +9,14 @@ import vw.him.car.entity.User;
 import vw.him.car.exception.NotAuthorizedException;
 import vw.him.car.exception.UserNotFoundException;
 import vw.him.car.service.UserService;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/api")
 public class UserController {
+
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers() {
