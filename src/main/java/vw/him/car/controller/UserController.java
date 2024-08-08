@@ -40,7 +40,6 @@ public class UserController {
 
     }
 
-    // try git
     @DeleteMapping("user/{id}")
     public ResponseEntity<String>  deleteUser(@RequestHeader("Authorization") String jwt, @PathVariable long id) {
         try{
